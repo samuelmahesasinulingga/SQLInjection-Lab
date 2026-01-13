@@ -4,9 +4,17 @@ include 'db.php';
 $username = $_POST['username'] ?? '';
 $password = $_POST['password'] ?? '';
 
-$sql = "SELECT username, password FROM users WHERE username = '$username'";
-$result = mysqli_query($conn, $sql);
+// Prepare SQL statement to prevent SQL Injection by separating query logic from user input
+$stmt = $conn->prepare("SELECT * FROM users WHERE username = ? AND password = ?");
 
+// Bind user input as parameters (strings) instead of injecting them directly into the query
+$stmt->bind_param("ss", $username, $password);
+
+// Execute the prepared statement safely
+$stmt->execute();
+
+// Retrieve the result set from the executed statement
+$result = $stmt->get_result();
 
 if ($result && mysqli_num_rows($result) > 0) {
     echo "<script>alert('Login success (VULNERABLE)');
