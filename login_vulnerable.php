@@ -17,7 +17,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result && mysqli_num_rows($result) > 0) {
-    echo "<script>alert('Login success (VULNERABLE)');
+    echo "<script>alert('Login success');
     window.location.href = 'dashboard.html';
     </script>";
 } else {
